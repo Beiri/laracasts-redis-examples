@@ -1,22 +1,28 @@
 <?php
 
-use App\Article;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('articles/trending', function () {
-    $trending = Redis::zrevrange('trending_articles', 0, 2);
+Route::get('/', function () {
+    // $user1Stats = [
+    //     'favorites' => 90,
+    //     'watchLaters' => 50,
+    //     'completions' => 25,
+    // ];
 
-    $trending = Article::hydrate(
-        array_map('json_decode', $trending)
-    );
+    // Redis::hmset('user.1.stats', $user1Stats);
 
-    dd($trending);
+    // return Redis::hgetall('user.1.stats');
+
+    Cache::put('foo', ['name' => 'Laracasts', 'age' => 3], 10);
+
+    return Cache::get('foo');
 });
 
-Route::get('articles/{article}', function (Article $article) {
-    Redis::zincrby('trending_articles', 1, $article);
+Route::get('favorite-video', function () {
+    Redis::hincrby('user.1.stats', 'favorites', 1);
 
-    return $article;
+    return redirect('/');
 });
