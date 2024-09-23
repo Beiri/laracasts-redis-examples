@@ -29,3 +29,10 @@ $factory->define(App\Article::class, function (Faker\Generator $faker) {
         'title' => $faker->sentence,
     ];
 });
+
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(App\Lesson::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->sentence,
+    ];
+});
